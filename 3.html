@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramas de Flujo y PQR - aprende con valeria la mas pro</title>
+    <style>
+        /* Variables para la paleta de colores (manteniendo la misma de la página original) */
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #1a73e8;
+            --accent-color: #4285f4;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+        }
+
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo h1 {
+            margin-left: 10px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        /* Estilos para secciones principales */
+        .main-section {
+            padding: 5rem 0;
+            margin-top: 70px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        /* Estilos para los diagramas de flujo */
+        .flowchart-section {
+            background-color: white;
+            padding: 5rem 0;
+        }
+
+        .flowchart-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .flowchart-tab {
+            padding: 1rem 2rem;
+            background-color: var(--light-color);
+            border: none;
+            border-radius: 5px;
+            margin: 0 10px 10px 10px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .flowchart-tab:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .flowchart-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .flowchart-content {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .flowchart-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flowchart-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+        }
+
+        .flowchart-title i, .flowchart-title span {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+
+        /* Estilos para el diagrama de flujo */
+        .flowchart-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 20px;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        /* Estilos específicos para los diagramas de flujo */
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Elementos del diagrama de flujo */
+        .flow-element {
+            position: relative;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .flow-start-end {
+            width: 200px;
+            height: 80px;
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .flow-process {
+            width: 200px;
+            height: 80px;
+            background-color: #cce5ff;
+            border: 2px solid var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .flow-decision {
+            width: 200px;
+            height: 100px;
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            transform: rotate(45deg);
+            margin: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .decision-text {
+            transform: rotate(-45deg);
+            padding: 15px;
+            color: #856404;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .flow-connector {
+            width: 3px;
+            height: 30px;
+            background-color: var(--gray-color);
+            margin: 0 auto;
+        }
+
+        .flow-branch {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+
+        .branch-left, .branch-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 50px;
+        }
+
+        .branch-connector-horizontal {
+            position: absolute;
+            height: 3px;
+            background-color: var(--gray-color);
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .branch-connector-vertical {
+            width: 3px;
+            height: 30px;
+            background-color: var(--gray-color);
+            margin: 0 auto;
+        }
+
+        .branch-label {
+            position: absolute;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+
+        .branch-label.yes {
+            top: 40px;
+            left: 40%;
+        }
+
+        .branch-label.no {
+            top: 40px;
+            right: 40%;
+        }
+
+        .flow-join {
+            position: relative;
+            width: 100%;
+        }
+
+        .join-lines {
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .join-line-vertical {
+            width: 3px;
+            height: 50px;
+            background-color: var(--gray-color);
+        }
+
+        .join-line-horizontal {
+            position: absolute;
+            height: 3px;
+            background-color: var(--gray-color);
+            bottom: 0;
+            left: 15%;
+            right: 15%;
+        }
+
+        /* PQR Sección */
+        .pqr-section {
+            background-color: var(--light-color);
+            padding: 5rem 0;
+        }
+
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: rgba(0, 86, 179, 0.05);
+        }
+
+        .accordion-header::after {
+            content: "+";
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .accordion-header.active::after {
+            content: "-";
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+            background-color: rgba(0, 86, 179, 0.02);
+        }
+
+        .accordion-content-inner {
+            padding: 1rem 0 1.5rem;
+        }
+
+        .channel-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 20px;
+            margin-right: 8px;
+        }
+
+        .chat-tag {
+            background-color: rgba(66, 133, 244, 0.15);
+            color: var(--primary-color);
+        }
+
+        .email-tag {
+            background-color: rgba(52, 168, 83, 0.15);
+            color: #34a853;
+        }
+
+        .social-tag {
+            background-color: rgba(251, 188, 5, 0.15);
+            color: #fbbc05;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-col p {
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                top: 70px;
+                left: 0;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                clip-path: circle(0% at 100% 0);
+                transition: clip-path 0.5s ease;
+            }
+
+            nav ul.active {
+                clip-path: circle(141.4% at 100% 0);
+            }
+
+            nav li {
+                margin: 1rem 2rem;
+            }
+
+            .flowchart-diagram {
+                padding: 10px;
+                overflow-x: scroll;
+            }
+            
+            .flowchart-tab {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .flowchart-content {
+                padding: 1.5rem;
+            }
+            
+            .flowchart-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="1.png" alt="VSoltec Logo">
+                <h1>aprende con valeria la mas pro</h1>
+            </div>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="2.html">canales de comunicación  </a></li>
+                    <li><a href="3.html">diagrama de flujos</a></li>
+                    
+
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección de diagramas de flujo -->
+    <section id="flowcharts" class="flowchart-section main-section">
+        <div class="container">
+            <h2 class="section-title">Diagramas de Flujo de Canales de Comunicación</h2>
+            <p class="text-center" style="margin-bottom: 2rem;">Conoce los procesos completos para utilizar correctamente cada uno de los canales de comunicación disponibles.</p>
+            
+            <div class="flowchart-tabs">
+                <button class="flowchart-tab active" onclick="openFlowchartTab('chat-flow')">💬 Chat Web</button>
+                <button class="flowchart-tab" onclick="openFlowchartTab('email-flow')">📩 Correo Electrónico</button>
+                <button class="flowchart-tab" onclick="openFlowchartTab('social-flow')">📱 Redes Sociales</button>
+            </div>
+            
+            <!-- Diagrama de Flujo Chat Web -->
+            <div id="chat-flow" class="flowchart-content active">
+                <h3 class="flowchart-title"><span>💬</span> Diagrama de Flujo del Chat Web</h3>
+                
+                <p>El chat web es una herramienta de comunicación inmediata que permite resolver dudas en tiempo real. A continuación, te mostramos el proceso completo para utilizarlo correctamente:</p>
+                
+                <div class="flowchart-diagram">
+                    <div class="diagram-container">
+                        <!-- Inicio -->
+                        <div class="flow-element">
+                            <div class="flow-start-end">Inicio</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Acceder al sitio web -->
+                        <div class="flow-element">
+                            <div class="flow-process">Acceder al sitio web</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Buscar ícono de chat -->
+                        <div class="flow-element">
+                            <div class="flow-process">Buscar ícono de chat</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Hacer clic en el ícono -->
+                        <div class="flow-element">
+                            <div class="flow-process">Hacer clic en el ícono</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Completar datos iniciales -->
+                        <div class="flow-element">
+                            <div class="flow-process">Completar datos iniciales (nombre, email)</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Decisión: ¿Agente disponible? -->
+                        <div class="flow-element">
+                            <div class="flow-decision">
+                                <div class="decision-text">¿Agente disponible?</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ramificación según la decisión -->
+                        <div class="flow-branch">
+                            <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                            <div class="branch-label yes">Sí</div>
+                            <div class="branch-label no">No</div>
+                            
+                            <div class="branch-left">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Conectar con asesor en vivo</div>
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Formular consulta</div>
+                            </div>
+                            
+                            <div class="branch-right">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Interactuar con chatbot</div>
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-decision">
+                                    <div class="decision-text">¿Resuelve la consulta?</div>
+                                </div>
+                                
+                                <!-- Sub-ramificación según la segunda decisión -->
+                                <div class="flow-branch" style="width: 80%;">
+                                    <div class="branch-connector-horizontal" style="width: 200px;"></div>
+                                    <div class="branch-label yes" style="left: 30%;">Sí</div>
+                                    <div class="branch-label no" style="right: 30%;">No</div>
+                                    
+                                    <div class="branch-left" style="margin: 0 20px;">
+                                        <div class="branch-connector-vertical"></div>
+                                        <div class="flow-process">Finalizar chat</div>
+                                    </div>
+                                    
+                                    <div class="branch-right" style="margin: 0 20px;">
+                                        <div class="branch-connector-vertical"></div>
+                                        <div class="flow-process">Solicitar agente humano</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Unión de caminos -->
+                        <div class="flow-join" style="margin-top: 80px;">
+                            <div class="join-lines">
+                                <div class="join-line-vertical" style="margin-left: 200px;"></div>
+                                <div class="join-line-vertical"></div>
+                                <div class="join-line-vertical" style="margin-right: 200px;"></div>
+                            </div>
+                            <div class="join-line-horizontal"></div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Resolver consulta -->
+                        <div class="flow-element">
+                            <div class="flow-process">Resolver consulta</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Fin -->
+                        <div class="flow-element">
+                            <div class="flow-start-end">Fin</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1rem; background-color: rgba(66, 133, 244, 0.1); border-radius: 8px;">
+                    <p><strong>Consejo:</strong> Si estás comunicándote con un chatbot y necesitas ayuda más especializada, generalmente existe una opción para solicitar hablar con un agente humano. Busca opciones como "Hablar con un asesor" o "Contactar a soporte".</p>
+                </div>
+            </div>
+            
+            <!-- Diagrama de Flujo Correo Electrónico -->
+            <div id="email-flow" class="flowchart-content">
+                <h3 class="flowchart-title"><span>📩</span> Diagrama de Flujo del Correo Electrónico</h3>
+                
+                <p>El correo electrónico es ideal para consultas que requieren documentación o seguimiento formal. Este es el proceso completo para utilizarlo eficazmente:</p>
+                
+                <div class="flowchart-diagram">
+                    <div class="diagram-container">
+                        <!-- Inicio -->
+                        <div class="flow-element">
+                            <div class="flow-start-end">Inicio</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Buscar dirección de correo -->
+                        <div class="flow-element">
+                            <div class="flow-process">Buscar dirección de correo adecuada</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Decisión: ¿Usar formulario o email directo? -->
+                        <div class="flow-element">
+                            <div class="flow-decision">
+                                <div class="decision-text">¿Usar formulario o email directo?</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ramificación según la decisión -->
+                        <div class="flow-branch">
+                            <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                            <div class="branch-label yes" style="left: 35%;">Formulario</div>
+                            <div class="branch-label no" style="right: 32%;">Email</div>
+                            
+                            <div class="branch-left">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Completar campos del formulario</div>
+                            </div>
+                            
+                            <div class="branch-right">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Abrir cliente de correo</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Unión de caminos -->
+                        <div class="flow-join">
+                            <div class="join-lines">
+                                <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                                <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                            </div>
+                            <div class="join-line-horizontal"></div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Redactar asunto claro -->
+                        <div class="flow-element">
+                            <div class="flow-process">Redactar asunto claro y descriptivo</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Estructurar mensaje -->
+                        <div class="flow-element">
+                            <div class="flow-process">Estructurar mensaje (saludo, contenido, despedida)</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Decisión: ¿Necesita adjuntos? -->
+                        <div class="flow-element">
+                            <div class="flow-decision">
+                                <div class="decision-text">¿Necesita adjuntos?</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ramificación según la decisión -->
+                        <div class="flow-branch">
+                            <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                            <div class="branch-label yes">Sí</div>
+                            <div class="branch-label no">No</div>
+                            
+                            <div class="branch-left">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Adjuntar archivos relevantes</div>
+                            </div>
+                            
+                            <div class="branch-right">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Revisar ortografía y formato</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Unión de caminos -->
+                        <div class="flow-join">
+                            <div class="join-lines">
+                                <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                                <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                            </div>
+                            <div class="join-line-horizontal"></div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Enviar correo -->
+                        <div class="flow-element">
+                            <div class="flow-process">Enviar correo</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Proceso: Guardar confirmación -->
+                        <div class="flow-element">
+                            <div class="flow-process">Guardar confirmación/número de ticket</div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Decisión: ¿Recibe respuesta en tiempo estimado? -->
+                        <div class="flow-element">
+                            <div class="flow-decision">
+                                <div class="decision-text">¿Recibe respuesta?</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ramificación según la decisión -->
+                        <div class="flow-branch">
+                            <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                            <div class="branch-label yes">Sí</div>
+                            <div class="branch-label no">No</div>
+                            
+                            <div class="branch-left">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Leer y procesar respuesta</div>
+                            </div>
+                            
+                            <div class="branch-right">
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Enviar correo de seguimiento</div>
+                                <div class="branch-connector-vertical"></div>
+                                <div class="flow-process">Considerar canal alternativo</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Unión de caminos -->
+                        <div class="flow-join">
+                            <div class="join-lines">
+                                <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                                <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                            </div>
+                            <div class="join-line-horizontal"></div>
+                        </div>
+                        
+                        <div class="flow-connector"></div>
+                        
+                        <!-- Fin -->
+                        <div class="flow-element">
+                            <div class="flow-start-end">Fin</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1rem; background-color: rgba(52, 168, 83, 0.1); border-radius: 8px;">
+                    <p><strong>Consejo:</strong> Guarda siempre copia de tus comunicaciones por correo electrónico y anota el número de referencia o ticket si te lo proporcionan. Esto facilitará el seguimiento de tu caso.</p>
+                </div>
+            </div>
+            
+            <!-- Diagrama de Flujo Redes
+<!-- Diagrama de Flujo Redes Sociales -->
+<div id="social-flow" class="flowchart-content">
+    <h3 class="flowchart-title"><span>📱</span> Diagrama de Flujo de Redes Sociales</h3>
+    
+    <p>Las redes sociales ofrecen un canal directo y público para comunicarte. Este es el proceso para utilizar este canal efectivamente:</p>
+    
+    <div class="flowchart-diagram">
+        <div class="diagram-container">
+            <!-- Inicio -->
+            <div class="flow-element">
+                <div class="flow-start-end">Inicio</div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Proceso: Identificar canal -->
+            <div class="flow-element">
+                <div class="flow-process">Identificar la red social oficial</div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Decisión: ¿Consulta pública o privada? -->
+            <div class="flow-element">
+                <div class="flow-decision">
+                    <div class="decision-text">¿Consulta pública o privada?</div>
+                </div>
+            </div>
+            
+            <!-- Ramificación según la decisión -->
+            <div class="flow-branch">
+                <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                <div class="branch-label yes" style="left: 35%;">Pública</div>
+                <div class="branch-label no" style="right: 32%;">Privada</div>
+                
+                <div class="branch-left">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Publicar en muro o comentar en post</div>
+                </div>
+                
+                <div class="branch-right">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Enviar mensaje directo (DM)</div>
+                </div>
+            </div>
+            
+            <!-- Unión de caminos -->
+            <div class="flow-join">
+                <div class="join-lines">
+                    <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                    <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                </div>
+                <div class="join-line-horizontal"></div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Proceso: Redactar mensaje conciso -->
+            <div class="flow-element">
+                <div class="flow-process">Redactar mensaje claro y conciso</div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Proceso: Incluir hashtags -->
+            <div class="flow-element">
+                <div class="flow-process">Incluir hashtags relevantes (opcional)</div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Decisión: ¿Necesita adjuntar material? -->
+            <div class="flow-element">
+                <div class="flow-decision">
+                    <div class="decision-text">¿Necesita adjuntar material?</div>
+                </div>
+            </div>
+            
+            <!-- Ramificación según la decisión -->
+            <div class="flow-branch">
+                <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                <div class="branch-label yes">Sí</div>
+                <div class="branch-label no">No</div>
+                
+                <div class="branch-left">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Adjuntar imágenes/videos relevantes</div>
+                </div>
+                
+                <div class="branch-right">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Revisar mensaje</div>
+                </div>
+            </div>
+            
+            <!-- Unión de caminos -->
+            <div class="flow-join">
+                <div class="join-lines">
+                    <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                    <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                </div>
+                <div class="join-line-horizontal"></div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Proceso: Enviar mensaje -->
+            <div class="flow-element">
+                <div class="flow-process">Enviar mensaje</div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Decisión: ¿Recibe respuesta en tiempo estimado? -->
+            <div class="flow-element">
+                <div class="flow-decision">
+                    <div class="decision-text">¿Recibe respuesta?</div>
+                </div>
+            </div>
+            
+            <!-- Ramificación según la decisión -->
+            <div class="flow-branch">
+                <div class="branch-connector-horizontal" style="width: 400px;"></div>
+                <div class="branch-label yes">Sí</div>
+                <div class="branch-label no">No</div>
+                
+                <div class="branch-left">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Revisar y responder según necesidad</div>
+                </div>
+                
+                <div class="branch-right">
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Esperar 24-48 horas</div>
+                    <div class="branch-connector-vertical"></div>
+                    <div class="flow-process">Intentar canal alternativo</div>
+                </div>
+            </div>
+            
+            <!-- Unión de caminos -->
+            <div class="flow-join">
+                <div class="join-lines">
+                    <div class="join-line-vertical" style="margin-left: 100px;"></div>
+                    <div class="join-line-vertical" style="margin-right: 100px;"></div>
+                </div>
+                <div class="join-line-horizontal"></div>
+            </div>
+            
+            <div class="flow-connector"></div>
+            
+            <!-- Fin -->
+            <div class="flow-element">
+                <div class="flow-start-end">Fin</div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 2rem; padding: 1rem; background-color: rgba(251, 188, 5, 0.1); border-radius: 8px;">
+        <p><strong>Consejo:</strong> Las redes sociales suelen tener horarios de atención específicos. Para consultas urgentes fuera de horario, considera utilizar el chat web o enviar un correo electrónico.</p>
+    </div>
+</div>
+<!-- Sección PQR -->
+<section id="pqr" class="pqr-section main-section">
+    <div class="container">
+        <h2 class="section-title">(PQR)</h2>
+        <p class="text-center" style="margin-bottom: 2rem;"></p>
+        
+        <div class="accordion">
+            <!-- Pregunta 1 -->
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                      ¿Por qué no responden en el chat web?             </button>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p>Es posible que el chat web no ofrezca respuesta inmediata si se intenta usar fuera del horario de atención establecido o si no hay asesores disponibles en ese momento.<br> En algunos casos, el asistente virtual puede recibir los mensajes y responder automáticamente, pero si la consulta<br> requiere atención humana, se recomienda dejar un mensaje con los datos de contacto para recibir respuesta posteriormente.<br></p>
+                        <p>
+                                                </div>
+                </div>
+            </div>
+            
+            <!-- Pregunta 2 -->
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                    ¿Por qué no recibí respuesta por correo electrónico? 
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p>Los correos electrónicos suelen tener un tiempo de respuesta estimado de 24 a 48 horas hábiles, dependiendo del flujo de consultas. Si no se ha recibido respuesta en ese plazo,<br> es recomendable revisar la bandeja de correo no deseado o reenviar el mensaje para asegurarse de que fue recibido correctamente. <br>También se puede optar por otro canal de comunicación para hacer seguimiento.</p>
+                                 
+                       
+                          </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Scripts -->
+<script>
+    // Menú móvil
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+    
+    // Función para cambiar entre pestañas de diagramas de flujo
+    function openFlowchartTab(tabId) {
+        // Ocultar todos los contenidos de pestañas
+        const tabContents = document.getElementsByClassName('flowchart-content');
+        for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove('active');
+        }
+        
+        // Desactivar todas las pestañas
+        const tabs = document.getElementsByClassName('flowchart-tab');
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+        }
+        
+        // Mostrar el contenido de la pestaña seleccionada y activar la pestaña
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+    
+    // Función para el acordeón de PQR
+    function toggleAccordion(element) {
+        // Cerrar todos los acordeones
+        const accordions = document.getElementsByClassName('accordion-header');
+        const contents = document.getElementsByClassName('accordion-content');
+        
+        for (let i = 0; i < accordions.length; i++) {
+            if (accordions[i] !== element) {
+                accordions[i].classList.remove('active');
+                contents[i].style.maxHeight = null;
+            }
+        }
+        
+        // Abrir/cerrar el acordeón actual
+        element.classList.toggle('active');
+        const content = element.nextElementSibling;
+        
+        if (element.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = null;
+        }
+    }
+</script>
+</body>
+</html>
